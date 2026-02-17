@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
-const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+export default function Register() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const { register } = useAuth()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userData = { username, password };
-    localStorage.setItem('user', JSON.stringify(userData));
-    navigate('/login');
-  };
+  const handleSubmit = e => {
+    e.preventDefault()
+    register(email, password)
+    navigate("/profile")
+  }
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Register</button>
+      <h2>Register</h2>
+      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+      <button>Register</button>
     </form>
-  );
-};
-
-export default Register;
+  )
+}

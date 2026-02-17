@@ -1,36 +1,48 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from "react"
 
-const AuthContext = createContext();
+const AuthContext = createContext()
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsLoggedIn(true);
+    const savedUser = localStorage.getItem("user")
+    if (savedUser) {
+      setUser(JSON.parse(savedUser))
     }
-  }, []);
+  }, [])
 
-  const login = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
-    setIsLoggedIn(true);
-  };
+  const login = (email, password) => {
+    const savedUser = JSON.parse(localStorage.getItem("user"))
+    if (
+      savedUser &&
+      savedUser.email === email &&
+      savedUser.password === password
+    ) {
+      setUser(savedUser)
+      return true
+    }
+    return false
+  }
+
+  const register = (email, password) => {
+    const newUser = { email, password }
+    localStorage.setItem("user", JSON.stringify(newUser))
+    setUser(newUser)
+  }
 
   const logout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-    setIsLoggedIn(false);
-  };
+    localStorage.removeItem("user")
+    setUser(null)
+  }
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export { AuthContext, AuthProvider };
+export function useAuth() {
+  return useContext(AuthContext)
+}

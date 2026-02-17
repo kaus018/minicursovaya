@@ -1,21 +1,107 @@
-body {
-  font-family: sans-serif;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
-  color: #333;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-h1, h2, h3 {
-  font-weight: bold;
-  margin-bottom: 1rem;
+body {
+  background: #f5f7fb;
+  color: #222;
 }
 
-a {
-  color: blue;
+/* Layout */
+
+nav {
+  background: #1e293b;
+  color: white;
+  padding: 16px;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: white;
   text-decoration: none;
+  font-weight: 500;
 }
 
-a:hover {
+nav a:hover {
   text-decoration: underline;
+}
+
+footer {
+  margin-top: 60px;
+  padding: 20px;
+  text-align: center;
+  background: #1e293b;
+  color: white;
+}
+
+/* Pages */
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  margin-bottom: 16px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* Forms */
+
+form {
+  max-width: 400px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+/* Surveys */
+
+.survey-list input {
+  margin-bottom: 20px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
 }

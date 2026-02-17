@@ -1,27 +1,13 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-
-const Profile = () => {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+export default function Profile() {
+  const { user, logout } = useAuth()
 
   return (
-    <div>
-      <h2>Profile</h2>
-      {user && (
-        <div>
-          <p>Username: {user.username}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      )}
+    <div className="container">
+      <div className="card">
+        <h2>Profile</h2>
+        <p>Email: {user.email}</p>
+        <button onClick={logout}>Logout</button>
+      </div>
     </div>
-  );
-};
-
-export default Profile;
+  )
+}

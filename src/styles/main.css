@@ -10,19 +10,19 @@ body {
   color: #222;
 }
 
-/* ===== NAV ===== */
-nav {
-  background: #1e293b;
+/* ===== NAV / HEADER ===== */
+header, footer {
+  background: #497dec;  /* Новый цвет */
   color: white;
   padding: 16px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-nav .logo {
-  font-weight: bold;
-  font-size: 18px;
+header h2 {
+  font-size: 24px;
 }
 
 nav a {
@@ -36,13 +36,27 @@ nav a:hover {
   text-decoration: underline;
 }
 
+header button {
+  margin-left: 15px;
+  background: #f87171;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+header button:hover {
+  background: #ef4444;
+}
+
 /* ===== FOOTER ===== */
 footer {
-  margin-top: 80px;
-  padding: 20px;
-  text-align: center;
-  background: #1e293b;
-  color: white;
+  justify-content: center;
+  font-size: 14px;
+  margin-top: 60px;
 }
 
 /* ===== CONTAINER ===== */
@@ -59,6 +73,7 @@ footer {
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
 }
 
 .hero h1 {
@@ -75,6 +90,29 @@ footer {
   width: auto;
   padding: 12px 25px;
   font-size: 16px;
+}
+
+/* ===== FEATURES & ABOUT ===== */
+.features, .about {
+  background: white;
+  padding: 30px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  margin-left: 40px; /* сдвиг текста вправо */
+}
+
+.features h2, .about h2 {
+  margin-bottom: 16px;
+}
+
+.features ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.features li, .about p {
+  margin-bottom: 8px;
 }
 
 /* ===== CARDS ===== */
@@ -191,12 +229,20 @@ button:hover {
 
 /* ===== MOBILE ===== */
 @media (max-width: 600px) {
-  nav {
+  header, nav {
     flex-direction: column;
     gap: 10px;
   }
 
   .hero {
     padding: 30px;
+  }
+
+  .features, .about {
+    margin-left: 0; /* чтобы на мобильном не было смещения */
+  }
+
+  .search input {
+    width: 100%;
   }
 }

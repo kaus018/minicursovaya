@@ -1,59 +1,96 @@
-// import { useParams } from "react-router-dom"
-
-// export default function SurveyDetails() {
-//   const { id } = useParams()
-
-//   return (
-//     <div>
-//       <h2>Survey #{id}</h2>
-//       <p>Здесь будет описание опроса</p>
-//     </div>
-//   )
-// }
 import { useParams } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+
+const surveyData = {
+  1: {
+    title: "Опрос студентов AITU",
+    questions: [
+      {
+        text: "Нравится ли вам обучение в AITU?",
+        options: ["Очень нравится", "Нормально", "Не нравится"],
+        votes: [0, 0, 0]
+      },
+      {
+        text: "Довольны ли вы расписанием?",
+        options: ["Да", "Нет"],
+        votes: [0, 0]
+      }
+    ]
+  },
+  2: {
+    title: "Опрос спортзала",
+    questions: [
+      {
+        text: "Довольны ли вы оборудованием?",
+        options: ["Да", "Средне", "Нет"],
+        votes: [0, 0, 0]
+      }
+    ]
+  },
+  3: {
+    title: "Опрос школьников",
+    questions: [
+      {
+        text: "Сложная ли учеба?",
+        options: ["Очень", "Нормально", "Легко"],
+        votes: [0, 0, 0]
+      }
+    ]
+  }
+}
 
 export default function SurveyDetails() {
   const { id } = useParams()
+  const storageKey = `survey-${id}`
 
-  // Пример вопросов
-  const questions = [
-    { text: "Насколько вам нравится наша платформа?", options: ["Отлично", "Хорошо", "Средне", "Плохо"], votes: [0,0,0,0] },
-    { text: "Хотите ли вы больше функций?", options: ["Да", "Нет"], votes: [0,0] }
-  ]
+  const [questions, setQuestions] = useState(
+    JSON.parse(localStorage.getItem(storageKey)) ||
+    surveyData[id].questions
+  )
 
-  const [qData, setQData] = useState(questions)
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(questions))
+  }, [questions])
 
   const handleVote = (qIndex, oIndex) => {
-    const newData = [...qData]
+    const newData = [...questions]
     newData[qIndex].votes[oIndex] += 1
-    setQData(newData)
-    localStorage.setItem(`survey-${id}`, JSON.stringify(newData))
+    setQuestions(newData)
   }
 
   return (
     <div className="container">
-      <h2>Опрос №{id}</h2>
+      <h2>{surveyData[id].title}</h2>
 
-      {qData.map((q, i) => {
-        const total = q.votes.reduce((a,b)=>a+b, 0)
+      {questions.map((q, qi) => {
+        const total = q.votes.reduce((a, b) => a + b, 0)
+
         return (
-          <div key={i} style={{marginBottom:"30px"}}>
+          <div key={qi} className="card">
             <h3>{q.text}</h3>
-            <div>
-              {q.options.map((o, j) => {
-                const percent = total === 0 ? 0 : Math.round((q.votes[j]/total)*100)
-                return (
-                  <div key={j} style={{marginBottom:"8px"}}>
-                    <button onClick={()=>handleVote(i,j)}>{o}</button>
-                    <div style={{height:"10px", background:"#ccc", width:"100%", borderRadius:"5px", marginTop:"4px"}}>
-                      <div style={{width:`${percent}%`, background:"#4caf50", height:"100%", borderRadius:"5px"}}></div>
-                    </div>
-                    <small>{percent}%</small>
+
+            {q.options.map((opt, oi) => {
+              const percent = total === 0
+                ? 0
+                : Math.round((q.votes[oi] / total) * 100)
+
+              return (
+                <div key={oi} style={{ marginBottom: "12px" }}>
+                  <button onClick={() => handleVote(qi, oi)}>
+                    {opt}
+                  </button>
+
+                  <div className="progress">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${percent}%` }}
+                    />
                   </div>
-                )
-              })}
-            </div>
+
+                  <small>{percent}%</small>
+                </div>
+              )
+            })}
           </div>
         )
       })}

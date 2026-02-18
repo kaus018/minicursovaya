@@ -6,7 +6,7 @@ export default function Home() {
       <section className="hero" style={{textAlign: "center"}}>
         <h1>Online Survey Platform</h1>
         <p>Создавайте, проходите и анализируйте онлайн-опросы</p>
-        <img src="/images/hero-survey.jpg" alt="Hero Survey" style={{width:"80%", maxWidth:"600px", borderRadius:"10px"}} />
+        <img src="/images/hero-survey.png" alt="Hero Survey" style={{width:"80%", maxWidth:"600px", borderRadius:"10px"}} />
         <div style={{marginTop:"20px"}}>
           <Link to="/surveys">
             <button>Посмотреть опросы</button>

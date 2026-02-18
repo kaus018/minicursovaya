@@ -1,29 +1,20 @@
-import { useEffect, useState } from "react"
+import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
-import { logout } from "../context/AuthContext"
 
 export default function Profile() {
-  const [user, setUser] = useState(null)
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"))
-    if (!savedUser) {
-      navigate("/login")
-    } else {
-      setUser(savedUser)
-    }
-  }, [])
-
-  if (!user) return null
+  const handleLogout = () => {
+    logout()
+    navigate("/login")
+  }
 
   return (
     <div className="container">
-      <h2>Профиль пользователя</h2>
-      <p>Email: {user.email}</p>
-      <button onClick={() => { logout(); navigate("/login") }}>
-        Выйти
-      </button>
+      <h2>Профиль</h2>
+      <p>Email: {user?.email}</p>
+      <button onClick={handleLogout}>Выйти</button>
     </div>
   )
 }

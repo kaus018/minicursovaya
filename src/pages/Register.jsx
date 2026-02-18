@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { register } from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext"
 
 export default function Register() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const { register } = useAuth()  // ✅ берем register из контекста
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -16,7 +17,7 @@ export default function Register() {
       return
     }
 
-    register(email, password) // сохраняем в localStorage
+    register(email, password) // сохраняем в localStorage через контекст
     navigate("/login")
   }
 

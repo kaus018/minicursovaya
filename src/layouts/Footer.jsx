@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <footer>© 2026 Survey App</footer>
+  return (
+    <footer className="footer">
+      <p>© 2026 Online Survey Platform</p>
+    </footer>
+  )
 }

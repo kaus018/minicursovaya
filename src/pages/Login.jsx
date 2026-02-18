@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { login } from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const { login } = useAuth()   // ВОТ ОТСЮДА БЕРЁМ
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      alert("Введите корректный email")
-      return
-    }
 
     const success = login(email, password)
     if (success) navigate("/profile")
@@ -25,8 +20,18 @@ export default function Login() {
     <div className="container">
       <h2>Вход</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" required onChange={e=>setEmail(e.target.value)} />
-        <input type="password" placeholder="Пароль" required onChange={e=>setPassword(e.target.value)} />
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          onChange={e => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          required
+          onChange={e => setPassword(e.target.value)}
+        />
         <button type="submit">Войти</button>
       </form>
     </div>

@@ -1,3 +1,12 @@
+import { useState } from "react"
+import { Link } from "react-router-dom"
+
+const surveys = [
+  { id: 1, title: "Fitness habits" },
+  { id: 2, title: "Study preferences" },
+  { id: 3, title: "Travel interests" },
+]
+
 export default function SurveyList() {
   const [search, setSearch] = useState("")
 
@@ -8,7 +17,10 @@ export default function SurveyList() {
   return (
     <div className="container survey-list">
       <h2>Surveys</h2>
-      <input placeholder="Search..." onChange={e => setSearch(e.target.value)} />
+      <input
+        placeholder="Search..."
+        onChange={e => setSearch(e.target.value)}
+      />
 
       {filtered.map(s => (
         <div className="card" key={s.id}>

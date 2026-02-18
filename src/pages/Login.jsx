@@ -18,9 +18,29 @@ export default function Login() {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <input
+  type="email"
+  placeholder="Email"
+  required
+  onChange={e => setEmail(e.target.value)}
+/>
+
       <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
       <button>Login</button>
     </form>
   )
+}
+const handleSubmit = e => {
+  e.preventDefault()
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  if (!emailRegex.test(email)) {
+    alert("Введите корректный email")
+    return
+  }
+
+  const success = login(email, password)
+  if (success) navigate("/profile")
+  else alert("Неверные данные")
 }

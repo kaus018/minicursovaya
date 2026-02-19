@@ -236,6 +236,152 @@ footer p {
   border-radius: 6px;
 }
 
+/* ===== PROFILE PAGE STYLES ===== */
+.profile-main {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.profile-header {
+  background: #ffffff;
+  padding: 40px;
+  border: 1px solid #e5e5e5;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.profile-info h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.profile-info p {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-item {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 24px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.profile-surveys {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.profile-surveys h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+}
+
+.surveys-list {
+  list-style: none;
+  padding: 0;
+}
+
+.survey-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: padding-left 0.2s;
+}
+
+.survey-item:last-child {
+  border-bottom: none;
+}
+
+.survey-item:hover {
+  padding-left: 12px;
+}
+
+.survey-title {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.survey-badge {
+  background: #1a1a1a;
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-actions {
+  text-align: center;
+}
+
+.logout-btn {
+  padding: 12px 36px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.logout-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 /* ===== HOME PAGE STYLES ===== */
 .container > h1 {
   font-size: 48px;

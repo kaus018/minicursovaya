@@ -7,15 +7,15 @@ export function AuthProvider({ children }) {
     JSON.parse(localStorage.getItem("user")) || null
   )
 
-  const register = (email, password) => {
-    const newUser = { email, password }
+  const register = (email, password, username) => {
+    const newUser = { email, password, username }
     localStorage.setItem("user", JSON.stringify(newUser))
     setUser(newUser)
   }
 
-  const login = (email, password) => {
+  const login = (username, password) => {
     const saved = JSON.parse(localStorage.getItem("user"))
-    if (saved && saved.email === email && saved.password === password) {
+    if (saved && saved.username === username && saved.password === password) {
       setUser(saved)
       return true
     }

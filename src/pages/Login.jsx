@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
 export default function Login() {
-  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [username , setUsername] = useState("")
   const navigate = useNavigate()
   const { login } = useAuth()   // ВОТ ОТСЮДА БЕРЁМ
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const success = login(email, password)
-    if (success) navigate("/profile")
+    const success = login(username, password)
+    if (success) navigate("/")
     else alert("Неверные данные")
   }
 
@@ -21,13 +21,13 @@ export default function Login() {
       <section className="auth-section">
         <h2>Вход</h2>
         <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
+          <input type="text" 
+        placeholder="Username"
+         required onChange={e => setUsername(e.target.value)}
+         />
+       
+        
+        <input 
           type="password"
           placeholder="Пароль"
           required

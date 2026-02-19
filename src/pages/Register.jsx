@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
 export default function Register() {
+  const [username , setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ export default function Register() {
       return
     }
 
-    register(email, password) // сохраняем в localStorage через контекст
+    register(email, password, username) // сохраняем в localStorage через контекст
     navigate("/login")
   }
 
@@ -26,6 +27,12 @@ export default function Register() {
       <section className="auth-section">
         <h2>Регистрация</h2>
         <form onSubmit={handleSubmit}>
+           <input
+          type="text"
+          placeholder="username"
+          required
+          onChange={e => setUsername(e.target.value)}
+        />
         <input
           type="email"
           placeholder="Email"

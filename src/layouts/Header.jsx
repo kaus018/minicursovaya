@@ -10,6 +10,7 @@ export default function Header() {
       <nav>
         <Link to="/">Главная</Link>
         <Link to="/surveys">Опросы</Link>
+        <Link to="/about">О нас</Link>
         {user ? (
           <>
             <Link to="/profile">Профиль</Link>

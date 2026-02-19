@@ -1,5 +1,6 @@
 import { useState } from "react"
 import SurveyCard from "../components/SurveyCard"
+import { Link } from "react-router-dom"
 
 const surveys = [
   {
@@ -30,24 +31,40 @@ export default function SurveyList() {
   )
 
   return (
-    <main className="container">
-      <section className="surveys-section">
-        <h2>Доступные опросы</h2>
+    <main className="container surveys-page">
+      <header className="surveys-header">
+        <div>
+          <h1>Доступные опросы</h1>
+          <p className="surveys-subtitle">Найдите и пройдите интересующие вас опросы</p>
+        </div>
+        <div className="surveys-count">
+          <span className="count-badge">{filtered.length}</span>
+          <span className="count-label">опросов</span>
+        </div>
+      </header>
 
+      <section className="surveys-search">
         <input
-          className="search"
+          className="search-input"
           type="text"
-          placeholder="Поиск..."
+          placeholder="Поиск опроса..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
+      </section>
 
-        <div className="card-grid">
+      {filtered.length > 0 ? (
+        <section className="card-grid surveys-grid">
           {filtered.map(survey => (
             <SurveyCard key={survey.id} survey={survey} />
           ))}
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="no-surveys">
+          <h3>Опросы не найдены</h3>
+          <p>Попробуйте использовать другое ключевое слово</p>
+        </section>
+      )}
     </main>
   )
 }

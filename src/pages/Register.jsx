@@ -7,7 +7,7 @@ export default function Register() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-  const { register } = useAuth()  // ✅ берем register из контекста
+  const { register, login } = useAuth()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -18,8 +18,11 @@ export default function Register() {
       return
     }
 
-    register(email, password, username) // сохраняем в localStorage через контекст
-    navigate("/login")
+    register(email, password, username)
+    const success = login(username, password)
+    if (success) {
+      navigate("/")
+    }
   }
 
   return (
@@ -27,26 +30,26 @@ export default function Register() {
       <section className="auth-section">
         <h2>Регистрация</h2>
         <form onSubmit={handleSubmit}>
-           <input
-          type="text"
-          placeholder="username"
-          required
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Пароль"
-          required
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button type="submit">Зарегистрироваться</button>
-      </form>
+          <input
+            type="text"
+            placeholder="username"
+            required
+            onChange={e => setUsername(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            onChange={e => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Пароль"
+            required
+            onChange={e => setPassword(e.target.value)}
+          />
+          <button type="submit">Зарегистрироваться</button>
+        </form>
       </section>
     </main>
   )

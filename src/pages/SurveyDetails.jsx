@@ -52,10 +52,14 @@ export default function SurveyDetails() {
     localStorage.setItem(storageKey, JSON.stringify(questions))
   }, [questions])
 
+  const [lastClicked, setLastClicked] = useState(null)
+
   const handleVote = (qIndex, oIndex) => {
     const newData = [...questions]
     newData[qIndex].votes[oIndex] += 1
     setQuestions(newData)
+    setLastClicked(`${qIndex}-${oIndex}`)
+    setTimeout(() => setLastClicked(null), 300)
   }
 
   return (
@@ -77,8 +81,11 @@ export default function SurveyDetails() {
 
                 return (
                   <div key={oi} style={{ marginBottom: "12px" }}>
-                    <button onClick={() => handleVote(qi, oi)}>
-                      {opt}
+                    <button 
+                      onClick={() => handleVote(qi, oi)}
+                      className={lastClicked === `${qi}-${oi}` ? 'vote-pulse' : ''}
+                    >
+                      ✓ {opt}
                     </button>
 
                     <div className="progress">

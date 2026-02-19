@@ -27,7 +27,8 @@ export default function SurveyList() {
   const [search, setSearch] = useState("")
 
   const filtered = surveys.filter(s =>
-    s.title.toLowerCase().includes(search.toLowerCase())
+    s.title.toLowerCase().includes(search.toLowerCase()) ||
+    s.description.toLowerCase().includes(search.toLowerCase())
   )
 
   return (

@@ -11,9 +11,20 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    if (!username.trim() || !password.trim()) {
+      alert("Пожалуйста, заполните все поля")
+      return
+    }
+
     const success = login(username, password)
-    if (success) navigate("/")
-    else alert("Неверные данные")
+    if (success) {
+      alert(`✓ Вход успешен!\n\nДобро пожаловать, ${username}!`)
+      setUsername("")
+      setPassword("")
+      navigate("/")
+    } else {
+      alert("✗ Ошибка входа\n\nПользователь не найден или пароль неверный.\n\nПроверьте данные или зарегистрируйтесь.")
+    }
   }
 
   return (
@@ -21,18 +32,20 @@ export default function Login() {
       <section className="auth-section">
         <h2>Вход</h2>
         <form onSubmit={handleSubmit}>
-          <input type="text" 
-        placeholder="Username"
-         required onChange={e => setUsername(e.target.value)}
-         />
-       
-        
-        <input 
-          type="password"
-          placeholder="Пароль"
-          required
-          onChange={e => setPassword(e.target.value)}
-        />
+          <input 
+            type="text" 
+            placeholder="Username"
+            value={username}
+            required 
+            onChange={e => setUsername(e.target.value)}
+          />
+          <input 
+            type="password"
+            placeholder="Пароль"
+            value={password}
+            required
+            onChange={e => setPassword(e.target.value)}
+          />
         <button type="submit">Войти</button>
       </form>
       </section>

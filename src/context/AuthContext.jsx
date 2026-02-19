@@ -1,29 +1,45 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 
 const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
-  )
+  const [user, setUser] = useState(null)
+  const [users, setUsers] = useState([])
+
+  // Загружаем данные при монтировании
+  useEffect(() => {
+    const savedUsers = JSON.parse(localStorage.getItem("users")) || []
+    const savedCurrentUser = JSON.parse(localStorage.getItem("currentUser")) || null
+    setUsers(savedUsers)
+    setUser(savedCurrentUser)
+  }, [])
 
   const register = (email, password, username) => {
-    const newUser = { email, password, username }
-    localStorage.setItem("user", JSON.stringify(newUser))
-    setUser(newUser)
+    // Проверяем, не существует ли уже такой пользователь
+    const existingUser = users.find(u => u.username === username || u.email === email)
+    if (existingUser) {
+      return false
+    }
+
+    const newUser = { id: Date.now(), email, password, username }
+    const updatedUsers = [...users, newUser]
+    localStorage.setItem("users", JSON.stringify(updatedUsers))
+    setUsers(updatedUsers)
+    return true
   }
 
   const login = (username, password) => {
-    const saved = JSON.parse(localStorage.getItem("user"))
-    if (saved && saved.username === username && saved.password === password) {
-      setUser(saved)
+    const found = users.find(u => u.username === username && u.password === password)
+    if (found) {
+      localStorage.setItem("currentUser", JSON.stringify(found))
+      setUser(found)
       return true
     }
     return false
   }
 
   const logout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("currentUser")
     setUser(null)
   }
 

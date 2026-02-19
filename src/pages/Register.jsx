@@ -12,15 +12,34 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    if (!username.trim()) {
+      alert("Введите имя пользователя")
+      return
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       alert("Введите корректный email")
       return
     }
 
-    register(email, password, username)
-    const success = login(username, password)
-    if (success) {
+    if (password.length < 3) {
+      alert("Пароль должен быть не менее 3 символов")
+      return
+    }
+
+    const success = register(email, password, username)
+    if (!success) {
+      alert("✗ Ошибка регистрации\n\nПользователь с таким именем или email уже существует!")
+      return
+    }
+    
+    const loginSuccess = login(username, password)
+    if (loginSuccess) {
+      alert(`✓ Регистрация успешна!\n\nДобро пожаловать, ${username}!`)
+      setUsername("")
+      setEmail("")
+      setPassword("")
       navigate("/")
     }
   }
@@ -33,18 +52,21 @@ export default function Register() {
           <input
             type="text"
             placeholder="username"
+            value={username}
             required
             onChange={e => setUsername(e.target.value)}
           />
           <input
             type="email"
             placeholder="Email"
+            value={email}
             required
             onChange={e => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="Пароль"
+            value={password}
             required
             onChange={e => setPassword(e.target.value)}
           />

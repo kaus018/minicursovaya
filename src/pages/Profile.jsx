@@ -12,6 +12,7 @@ export default function Profile() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [votedSurveys, setVotedSurveys] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const voted = []
@@ -22,11 +23,26 @@ export default function Profile() {
       }
     })
     setVotedSurveys(voted)
+    setLoading(false)
   }, [])
 
   const handleLogout = () => {
     logout()
     navigate("/login")
+  }
+
+  if (loading) return <main><p>Загрузка...</p></main>
+
+  if (!user) {
+    return (
+      <main className="container">
+        <section className="auth-section">
+          <h2>Требуется авторизация</h2>
+          <p>Пожалуйста, войдите в свой аккаунт</p>
+          <button onClick={() => navigate("/login")}>Перейти к входу</button>
+        </section>
+      </main>
+    )
   }
 
   return (

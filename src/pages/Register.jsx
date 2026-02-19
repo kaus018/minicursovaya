@@ -22,9 +22,10 @@ export default function Register() {
   }
 
   return (
-    <div className="container">
-      <h2>Регистрация</h2>
-      <form onSubmit={handleSubmit}>
+    <main className="container">
+      <section className="auth-section">
+        <h2>Регистрация</h2>
+        <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
@@ -39,6 +40,7 @@ export default function Register() {
         />
         <button type="submit">Зарегистрироваться</button>
       </form>
-    </div>
+      </section>
+    </main>
   )
 }

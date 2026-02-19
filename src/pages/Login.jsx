@@ -17,9 +17,10 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
-      <h2>Вход</h2>
-      <form onSubmit={handleSubmit}>
+    <main className="container">
+      <section className="auth-section">
+        <h2>Вход</h2>
+        <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
@@ -34,6 +35,7 @@ export default function Login() {
         />
         <button type="submit">Войти</button>
       </form>
-    </div>
+      </section>
+    </main>
   )
 }

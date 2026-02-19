@@ -13,7 +13,7 @@ import Footer from "./layouts/Footer.jsx"
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="app-layout">
+      <div className="app-wrapper">
         <Header />
 
         <main className="app-content">

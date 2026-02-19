@@ -11,10 +11,12 @@ export default function Profile() {
   }
 
   return (
-    <div className="container">
-      <h2>Профиль</h2>
-      <p>Email: {user?.email}</p>
-      <button onClick={handleLogout}>Выйти</button>
-    </div>
+    <main className="container">
+      <section className="profile-section">
+        <h2>Профиль</h2>
+        <p>Email: {user?.email}</p>
+        <button onClick={handleLogout}>Выйти</button>
+      </section>
+    </main>
   )
 }

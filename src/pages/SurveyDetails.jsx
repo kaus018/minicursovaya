@@ -59,41 +59,43 @@ export default function SurveyDetails() {
   }
 
   return (
-    <div className="container">
-      <h2>{surveyData[id].title}</h2>
+    <main className="container">
+      <section className="survey-section">
+        <h2>{surveyData[id].title}</h2>
 
-      {questions.map((q, qi) => {
-        const total = q.votes.reduce((a, b) => a + b, 0)
+        {questions.map((q, qi) => {
+          const total = q.votes.reduce((a, b) => a + b, 0)
 
-        return (
-          <div key={qi} className="card">
-            <h3>{q.text}</h3>
+          return (
+            <article key={qi} className="card">
+              <h3>{q.text}</h3>
 
-            {q.options.map((opt, oi) => {
-              const percent = total === 0
-                ? 0
-                : Math.round((q.votes[oi] / total) * 100)
+              {q.options.map((opt, oi) => {
+                const percent = total === 0
+                  ? 0
+                  : Math.round((q.votes[oi] / total) * 100)
 
-              return (
-                <div key={oi} style={{ marginBottom: "12px" }}>
-                  <button onClick={() => handleVote(qi, oi)}>
-                    {opt}
-                  </button>
+                return (
+                  <div key={oi} style={{ marginBottom: "12px" }}>
+                    <button onClick={() => handleVote(qi, oi)}>
+                      {opt}
+                    </button>
 
-                  <div className="progress">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${percent}%` }}
-                    />
+                    <div className="progress">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+
+                    <small>{percent}%</small>
                   </div>
-
-                  <small>{percent}%</small>
-                </div>
-              )
-            })}
-          </div>
-        )
-      })}
-    </div>
+                )
+              })}
+            </article>
+          )
+        })}
+      </section>
+    </main>
   )
 }

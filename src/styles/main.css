@@ -8,17 +8,36 @@
 body {
   background: #f5f7fb;
   color: #222;
+  height: 100vh;
 }
 
-/* ===== NAV / HEADER ===== */
-header, footer {
-  background: #497dec;  /* Новый цвет */
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+.app-content {
+  flex: 1;
+}
+
+/*NAV/HEADER*/
+header {
+  background: #5d80cc;  
   color: white;
   padding: 16px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 header h2 {
@@ -54,9 +73,16 @@ header button:hover {
 
 /* ===== FOOTER ===== */
 footer {
+  background: #5d80cc;  
+  color: white;
+  padding: 16px 40px;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   font-size: 14px;
-  margin-top: 60px;
+  margin-top: auto;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
 }
 
 /* ===== CONTAINER ===== */
@@ -64,6 +90,16 @@ footer {
   max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
+  text-align: center;
+}
+
+.container form {
+  max-width: 400px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin: 20px auto;
 }
 
 /* ===== HERO ===== */

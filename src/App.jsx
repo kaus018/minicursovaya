@@ -10,31 +10,34 @@ import SurveyDetails from "./pages/SurveyDetails.jsx"
 import PrivateRoute from "./components/PrivateRoute.jsx"
 import Header from "./layouts/Header.jsx"
 import Footer from "./layouts/Footer.jsx"
-
 export default function App() {
   return (
     <BrowserRouter>
-      <Header />
+      <div className="app-layout">
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <main className="app-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
 
-        <Route path="/surveys" element={<SurveyList />} />
-        <Route path="/surveys/:id" element={<SurveyDetails />} />
-      </Routes>
+            <Route path="/surveys" element={<SurveyList />} />
+            <Route path="/surveys/:id" element={<SurveyDetails />} />
+          </Routes>
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </BrowserRouter>
   )
 }

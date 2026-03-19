@@ -1,35 +1,41 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import SurveyCard from "../components/SurveyCard"
-import { Link } from "react-router-dom"
+import axios from "axios"
 
-const surveys = [
-  {
-    id: 1,
-    title: "Опрос студентов AITU",
-    description: "Удовлетворенность обучением и кампусом",
-    img: "/images/survey1.jpg"
-  },
-  {
-    id: 2,
-    title: "Опрос посетителей спортзала",
-    description: "Качество оборудования и тренировок",
-    img: "/images/survey2.jpg"
-  },
-  {
-    id: 3,
-    title: "Опрос школьников",
-    description: "Отношение к учебной нагрузке",
-    img: "/images/survey3.jpg"
-  }
-]
+const API_URL = "http://localhost:5001/api"
 
 export default function SurveyList() {
+  const [surveys, setSurveys] = useState([])
   const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const fetchSurveys = async () => {
+      try {
+        setLoading(true)
+        const response = await axios.get(`${API_URL}/surveys`)
+        setSurveys(response.data.surveys)
+        setError("")
+      } catch (err) {
+        setError("Ошибка при загрузке опросов")
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchSurveys()
+  }, [])
 
   const filtered = surveys.filter(s =>
     s.title.toLowerCase().includes(search.toLowerCase()) ||
-    s.description.toLowerCase().includes(search.toLowerCase())
+    (s.description && s.description.toLowerCase().includes(search.toLowerCase()))
   )
+
+  if (loading) {
+    return <main className="container"><p>Загрузка опросов...</p></main>
+  }
 
   return (
     <main className="container surveys-page">
@@ -44,6 +50,8 @@ export default function SurveyList() {
         </div>
       </header>
 
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+
       <section className="surveys-search">
         <input
           className="search-input"
@@ -57,7 +65,7 @@ export default function SurveyList() {
       {filtered.length > 0 ? (
         <section className="card-grid surveys-grid">
           {filtered.map(survey => (
-            <SurveyCard key={survey.id} survey={survey} />
+            <SurveyCard key={survey._id} survey={survey} />
           ))}
         </section>
       ) : (

@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 export default function PrivateRoute({ children }) {
-  const user = JSON.parse(localStorage.getItem("currentUser"))
-  if (!user) return <Navigate to="/login" />
+  const { token } = useAuth()
+  if (!token) return <Navigate to="/login" />
   return children
 }

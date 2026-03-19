@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
 export default function Header() {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate("/")
+  }
 
   return (
     <header className="header">
@@ -13,8 +19,9 @@ export default function Header() {
         <Link to="/about">О нас</Link>
         {user ? (
           <>
-            <Link to="/profile">Профиль</Link>
-            <button onClick={logout}>Выйти</button>
+            <Link to="/create-survey">+ Создать опрос</Link>
+            <Link to="/profile">Профиль ({user.username})</Link>
+            <button onClick={handleLogout}>Выйти</button>
           </>
         ) : (
           <>

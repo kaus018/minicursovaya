@@ -1,29 +1,38 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
+import { isInputSafe } from "../utils/security"
 
 export default function Login() {
   const [password, setPassword] = useState("")
   const [username , setUsername] = useState("")
+  const [error, setError] = useState("")
   const navigate = useNavigate()
-  const { login } = useAuth()   // ВОТ ОТСЮДА БЕРЁМ
+  const { login, loading } = useAuth()   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
 
     if (!username.trim() || !password.trim()) {
-      alert("Пожалуйста, заполните все поля")
+      setError("Пожалуйста, заполните все поля")
       return
     }
 
-    const success = login(username, password)
-    if (success) {
-      alert(`✓ Вход успешен!\n\nДобро пожаловать, ${username}!`)
+    // Check for safe input
+    if (!isInputSafe(username) || !isInputSafe(password)) {
+      setError("Обнаружены недопустимые символы. Пожалуйста, проверьте ввод")
+      return
+    }
+
+    const result = await login(username, password)
+    if (result.success) {
+      alert(`✓ Вход успешен!\n\nДобро пожаловать, ${result.user.username}!`)
       setUsername("")
       setPassword("")
       navigate("/")
     } else {
-      alert("✗ Ошибка входа\n\nПользователь не найден или пароль неверный.\n\nПроверьте данные или зарегистрируйтесь.")
+      setError(result.error)
     }
   }
 
@@ -31,12 +40,14 @@ export default function Login() {
     <main className="container">
       <section className="auth-section">
         <h2>Вход</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <input 
             type="text" 
-            placeholder="Username"
+            placeholder="Username или Email"
             value={username}
             required 
+            disabled={loading}
             onChange={e => setUsername(e.target.value)}
           />
           <input 
@@ -44,9 +55,10 @@ export default function Login() {
             placeholder="Пароль"
             value={password}
             required
+            disabled={loading}
             onChange={e => setPassword(e.target.value)}
           />
-        <button type="submit">Войти</button>
+        <button type="submit" disabled={loading}>{loading ? "Загрузка..." : "Войти"}</button>
       </form>
       </section>
     </main>

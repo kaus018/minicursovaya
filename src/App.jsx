@@ -6,6 +6,7 @@ import Login from "./pages/Login.jsx"
 import Profile from "./pages/Profile.jsx"
 import SurveyList from "./pages/SurveyList.jsx"
 import SurveyDetails from "./pages/SurveyDetails.jsx"
+import CreateSurvey from "./pages/CreateSurvey.jsx"
 import About from "./pages/About.jsx"
 
 import PrivateRoute from "./components/PrivateRoute.jsx"
@@ -34,6 +35,14 @@ export default function App() {
 
             <Route path="/surveys" element={<SurveyList />} />
             <Route path="/surveys/:id" element={<SurveyDetails />} />
+            <Route
+              path="/create-survey"
+              element={
+                <PrivateRoute>
+                  <CreateSurvey />
+                </PrivateRoute>
+              }
+            />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>

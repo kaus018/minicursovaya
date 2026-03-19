@@ -1,222 +1,222 @@
-# Security Implementation Guide
+# Руководство по внедрению безопасности
 
-This document outlines the security improvements implemented in the Survey App project based on OWASP and web security best practices.
+Этот документ описывает улучшения безопасности, внедренные в проект Survey App на основе OWASP и лучших практик веб-безопасности.
 
-## Security Features Implemented
+## Реализованные функции безопасности
 
-### 1. CSRF (Cross-Site Request Forgery) Protection
+### 1. Защита от CSRF (Cross-Site Request Forgery)
 
-**Implementation:**
-- Created CSRF middleware (`backend/middleware/csrf.js`)
-- Generates unique tokens for each session
-- Verifies tokens on all state-changing requests (POST, PUT, DELETE)
-- Tokens are rotated after use
-- Automatic token cleanup every 5 minutes
+**Реализация:**
+- Создана CSRF middleware (`backend/middleware/csrf.js`)
+- Генерирует уникальные токены для каждой сессии
+- Проверяет токены на всех запросах, которые изменяют данные (POST, PUT, DELETE)
+- Токены ротируются после использования
+- Автоматическая очистка токенов каждые 5 минут
 
-**Files Modified:**
-- `backend/server.js` - Integrated CSRF middleware
-- `src/context/AuthContext.jsx` - CSRF token handling in axios interceptors
+**Измененные файлы:**
+- `backend/server.js` - Интегрирована CSRF middleware
+- `src/context/AuthContext.jsx` - Обработка CSRF токенов в axios перехватчиках
 
-### 2. XSS (Cross-Site Scripting) Prevention
+### 2. Предотвращение XSS (Cross-Site Scripting)
 
-**Implementation:**
-- Created security utility functions (`src/utils/security.js`)
-- HTML escaping for user input
-- Input validation to detect XSS patterns
-- Safe input checking before API requests
-- Content Security Policy headers configured
+**Реализация:**
+- Созданы функции безопасности (`src/utils/security.js`)
+- Экранирование HTML для пользовательского ввода
+- Проверка ввода для обнаружения XSS-паттернов
+- Безопасная проверка ввода перед API запросами
+- Настроены заголовки Content Security Policy
 
-**Functions Available:**
-- `escapeHtml()` - Escapes HTML special characters
-- `sanitizeInput()` - Removes dangerous scripts and handlers
-- `isInputSafe()` - Validates input for suspicious patterns
-- `stripHtml()` - Removes HTML tags
+**Доступные функции:**
+- `escapeHtml()` - Экранирует специальные символы HTML
+- `sanitizeInput()` - Удаляет опасные скрипты и обработчики
+- `isInputSafe()` - Проверяет ввод на подозрительные паттерны
+- `stripHtml()` - Удаляет HTML теги
 
-**Files Modified:**
-- `src/pages/Login.jsx` - Security validation
-- `src/pages/Register.jsx` - Security validation
-- `backend/middleware/validation.js` - Added pattern validation
+**Измененные файлы:**
+- `src/pages/Login.jsx` - Проверка безопасности
+- `src/pages/Register.jsx` - Проверка безопасности
+- `backend/middleware/validation.js` - Добавлена проверка паттернов
 
-### 3. SQL Injection Prevention
+### 3. Предотвращение SQL-инъекции
 
-**Implementation:**
-- Using Mongoose ORM with schema validation
-- MongoDB Sanitize middleware
-- Input validation with express-validator
-- Type checking at database level
+**Реализация:**
+- Использование Mongoose ORM с валидацией схемы
+- Middleware MongoDB Sanitize
+- Валидация ввода с express-validator
+- Проверка типов на уровне базы данных
 
-**Files:**
+**Файлы:**
 - `backend/models/User.js`
 - `backend/models/Survey.js`
 - `backend/models/Response.js`
 
-### 4. Password Security
+### 4. Безопасность паролей
 
-**Enhancements:**
-- Increased minimum length from 6 to 8 characters
-- Required special characters (@$!%*?&)
-- Required uppercase and lowercase letters
-- Required numbers
-- Bcrypt hashing with 10-round salt
+**Улучшения:**
+- Увеличена минимальная длина с 6 до 8 символов
+- Обязательны специальные символы (@$!%*?&)
+- Обязательны прописные и строчные буквы
+- Обязательны цифры
+- Хеширование Bcrypt с 10-раундовой солью
 
-**Implementation:**
-- `backend/models/User.js` - Pre-save password hashing
-- `src/pages/Register.jsx` - Client-side validation
-- `backend/controllers/authController.js` - Server-side validation
+**Реализация:**
+- `backend/models/User.js` - Хеширование пароля перед сохранением
+- `src/pages/Register.jsx` - Валидация на клиенте
+- `backend/controllers/authController.js` - Валидация на сервере
 
-### 5. Input Validation
+### 5. Валидация входных данных
 
-**Enhanced Validation:**
-- Email format validation
-- Username constraints (3+ characters, alphanumeric only)
-- Password strength requirements
-- Custom validators for XSS patterns
-- Array validation for surveys and responses
+**Улучшенная валидация:**
+- Проверка формата email
+- Ограничения для имени пользователя (3+ символов, только буквы и цифры)
+- Требования к надежности пароля
+- Пользовательские валидаторы для XSS-паттернов
+- Валидация массивов для опросов и ответов
 
-**File:**
-- `backend/middleware/validation.js` - Comprehensive validation rules
+**Файл:**
+- `backend/middleware/validation.js` - Полный набор правил валидации
 
-### 6. Security Headers
+### 6. Заголовки безопасности
 
-**Helmet Configuration:**
-- Content Security Policy (CSP) - Restricts resource loading
-- X-Frame-Options - Prevents clickjacking
-- X-Content-Type-Options - Prevents MIME sniffing
-- Strict-Transport-Security - Enforces HTTPS
-- Referrer-Policy - Controls referrer information
+**Конфигурация Helmet:**
+- Content Security Policy (CSP) - Ограничивает загрузку ресурсов
+- X-Frame-Options - Предотвращает clickjacking
+- X-Content-Type-Options - Предотвращает MIME-sniffing
+- Strict-Transport-Security - Принудительно использует HTTPS
+- Referrer-Policy - Контролирует информацию о источнике
 
-**File:**
-- `backend/server.js` - Helmet configuration
+**Файл:**
+- `backend/server.js` - Конфигурация Helmet
 
-### 7. Rate Limiting
+### 7. Ограничение частоты запросов
 
-**Implemented Limits:**
-- General limit: 100 requests per 15 minutes
-- Auth limit: 5 login/register attempts per 15 minutes
-- Protects against brute force attacks
+**Установленные лимиты:**
+- Общий лимит: 100 запросов за 15 минут
+- Лимит для аутентификации: 5 попыток входа/регистрации за 15 минут
+- Защита от атак перебора (brute force)
 
-**Configuration:**
-- Easy to adjust in environment variables
-- Separate limits for different endpoints
+**Конфигурация:**
+- Легко регулируется через переменные окружения
+- Отдельные лимиты для разных эндпоинтов
 
-### 8. Security Logging
+### 8. Логирование безопасности
 
-**Logging Features:**
-- Failed authentication attempts (401/403)
-- Rate limit hits (429)
-- Suspicious input patterns detection
-- Security event logging
+**Функции логирования:**
+- Неудачные попытки аутентификации (401/403)
+- Превышение лимитов частоты (429)
+- Обнаружение подозрительных паттернов ввода
+- Логирование событий безопасности
 
-**File:**
+**Файл:**
 - `backend/middleware/security.js`
 
-### 9. CORS Protection
+### 9. Защита CORS
 
-**Configuration:**
-- Whitelist of allowed origins
-- Credentials sharing enabled for development
-- Specific HTTP methods allowed
-- Custom headers support (X-CSRF-Token)
+**Конфигурация:**
+- Whitelist разрешённых источников
+- Обмен учетными данными включен для разработки
+- Разрешены конкретные HTTP методы
+- Поддержка пользовательских заголовков (X-CSRF-Token)
 
-**Environment-based:**
-- Development: Multiple localhost origins
-- Production: Single domain specified in env
+**На основе окружения:**
+- Разработка: Несколько localhost источников
+- Продакшн: Один домен, указанный в переменных окружения
 
-### 10. Request Size Limiting
+### 10. Ограничение размера запроса
 
-**Limit:** 10KB for JSON body
-- Prevents large payload attacks
-- Configurable in server.js
+**Лимит:** 10KB для JSON тела запроса
+- Предотвращает атаки с использованием больших полезных нагрузок
+- Настраивается в server.js
 
-## Best Practices Implemented
+## Реализованные лучшие практики
 
-1. **Data Sanitization**
-   - NoSQL injection prevention with mongodb-sanitize
-   - Input trimming and validation
-   - Type checking
+1. **Санитизация данных**
+   - Предотвращение NoSQL-инъекций с mongodb-sanitize
+   - Кроссинг (trimming) ввода и валидация
+   - Проверка типов
 
-2. **Error Handling**
-   - Generic error messages (don't reveal system details)
-   - Logging of actual errors server-side
-   - Proper HTTP status codes
+2. **Обработка ошибок**
+   - Универсальные сообщения об ошибках (не раскрывают детали системы)
+   - Логирование реальных ошибок на сервере
+   - Правильные HTTP статус-коды
 
-3. **Token Management**
-   - JWT with 7-day expiration
-   - CSRF tokens with 1-hour expiration
-   - Token rotation on use
+3. **Управление токенами**
+   - JWT с истечением через 7 дней
+   - CSRF токены с истечением через 1 час
+   - Ротация токенов после использования
 
-4. **Secure Authentication**
-   - Bearer token in Authorization header
-   - Password comparison using bcrypt
-   - No password exposure in responses
+4. **Безопасная аутентификация**
+   - Bearer токен в заголовке Authorization
+   - Сравнение пароля с использованием bcrypt
+   - Пароли не раскрываются в ответах
 
-5. **Frontend Security**
-   - Input validation before API calls
-   - CSRF token management
-   - Secure axios instance with interceptors
+5. **Безопасность на фронтенде**
+   - Валидация ввода перед API запросами
+   - Управление CSRF токенами
+   - Защищённый экземпляр axios с перехватчиками
 
-## Environment Variables (.env)
+## Переменные окружения (.env)
 
-Required for security:
+Необходимые для безопасности:
 ```
-JWT_SECRET=your_long_cryptographically_secure_key
+JWT_SECRET=ваш_длинный_криптографически_стойкий_ключ
 NODE_ENV=production
-MONGODB_URI=your_database_url
-CORS_ORIGINS=your_domain.com
+MONGODB_URI=ваш_url_базы_данных
+CORS_ORIGINS=ваш_домен.com
 ```
 
-## Testing Security
+## Тестирование безопасности
 
-### SQL Injection Test
-Try login with: `' OR 1=1 --`
-Should be blocked by validation
+### Тест SQL-инъекции
+Попробуйте вход с: `' OR 1=1 --`
+Должен быть заблокирован валидацией
 
-### XSS Test
-Try comment: `<script>alert('XSS')</script>`
-Should be sanitized
+### Тест XSS
+Попробуйте комментарий: `<script>alert('XSS')</script>`
+Должен быть санитизирован
 
-### CSRF Test
-POST request without CSRF token should fail
+### Тест CSRF
+POST запрос без CSRF токена должен быть отклонён
 
-### Brute Force Test
-5+ failed logins should be rate limited
+### Тест Brute Force
+5+ неудачных попыток входа должны быть限ограничены лимитом частоты
 
-## Areas for Further Enhancement
+## Области для дальнейшего улучшения
 
-1. **Production Deployment:**
-   - Use Redis for session/CSRF token storage
-   - Enable HTTPS only
-   - Set secure cookie flags
-   - Use environment-specific secrets
+1. **Развёртывание на продакшене:**
+   - Использование Redis для хранения сессий/CSRF токенов
+   - Включение только HTTPS
+   - Установка флагов безопасных cookies
+   - Использование специфичных для окружения секретов
 
-2. **Monitoring:**
-   - Implement security event aggregation
-   - Set up alerts for suspicious patterns
-   - Track failed authentication attempts
+2. **Мониторинг:**
+   - Внедрение агрегирования событий безопасности
+   - Установка оповещений для подозрительных паттернов
+   - Отслеживание неудачных попыток аутентификации
 
-3. **Additional Features:**
-   - Two-factor authentication
-   - Account lockout after failed attempts
-   - IP whitelisting
-   - Device fingerprinting
+3. **Дополнительные функции:**
+   - Двухфакторная аутентификация
+   - Блокировка аккаунта после неудачных попыток
+   - IP-адреcсное огpаничение
+   - Fingerprint устройства
 
-4. **API Security:**
-   - API versioning
-   - OAuth2 for third-party access
-   - Rate limiting per user/IP
-   - Request signing
+4. **API безопасность:**
+   - Версионирование API
+   - OAuth2 для доступа третьих сторон
+   - Ограничение частоты на пользователя/IP
+   - Подпись запроса
 
-## References
+## Справочные материалы
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 - [JWT Best Practices](https://tools.ietf.org/html/rfc8725)
 - [Express Security Best Practices](https://expressjs.com/en/advanced/best-practice-security.html)
 
-## Compliance
+## Соответствие стандартам
 
-This implementation follows:
-- OWASP Security Guidelines
-- Express.js Security Best Practices
+Эта реализация соответствует:
+- OWASP рекомендациям по безопасности
+- Лучшим практикам безопасности Express.js
 - NIST Cybersecurity Framework
-- Industry Standard Password Requirements
+- Промышленным стандартам требований к паролям
